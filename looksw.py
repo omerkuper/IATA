@@ -1,5 +1,5 @@
 
-dicta = {'cdg':['nyc', 'lax', 'syd', 'fra'], 'fra':['chc', 'akl', 'mel','tlv', 'cdg', 'tyu'], 'tlv': ['cdg', 'fra', 'per'], 'ams':['lhr', 'mad'], 'tyu':['lhr', 'nml']}
+dicta = {'cdg':['nyc', 'lax', 'syd', 'fra'], 'fra':['chc','ams', 'akl', 'mel','tlv', 'cdg', 'tyu'], 'tlv': ['cdg', 'fra', 'per'], 'ams':['lhr', 'mad'], 'tyu':['lhr', 'nml']}
 
 def look(lst, end, p):
   if len(lst) == 1:
@@ -19,8 +19,9 @@ def look(lst, end, p):
           n.append(lst[i]+[x])
       except:
         pass
-    if p != 1:
+    if p < 2:
       look(n, end, p)
+
 
     
 look(['tlv'], 'lhr',0)
