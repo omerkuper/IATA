@@ -5,10 +5,10 @@ from datetime import date, timedelta
 YesNo = {'y': 'true', 'n': 'false'}
 
 start = ['LHR', 'ams', 'nyc']
-end = ['EZE', 'chc']
-date_i = [200901]
-stay_in = [3, 10]
-loop = 3
+end = ['EZE', 'ttt', 'aaa']
+date_i = [200901, 230401, 220301]
+stay_in = [3]
+loop = 2
 direct_flight = 'y'
 
 
@@ -23,17 +23,21 @@ def RoundTrip():
                 if len(date_i) == 1:
                     x = 0
                 elif len(start) >= len(end):
-                    x = destination
-                else:
                     x = counter_out
-
+                else:
+                    x = destination
                
-                if len(start) >= len(end) and len(stay_in) == 1:
+                
+                if len(stay_in) == 1:
                     y = 0
-                elif len(start) >= len(end) and len(stay_in) != 1:
+                elif len(stay_in) == len(start) and len(start) != len(end):
+                    y = counter_out
+                elif len(stay_in) == len(end) and len(start) != len(end):
+                    y = destination
+                elif len(start) == len(end):
                     y = destination
                 else:
-                    y = counter_out
+                    y = destination
 
 
                 date_return = time.strptime(str(date_i[x]), '%y%m%d')
