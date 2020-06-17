@@ -53,15 +53,16 @@ def urls(*args):
 def date_returns(*args):
     route = args[0]
     counter = args[1]
-    if route is not 'MultiCity':
+    if route != 'MultiCity':
       dates =  args[2]
-      date_return = time.strptime(str(date_i[dates[0]]), '%y%m%d')
+      date_return = time.strptime(str(date_i[dates]), '%y%m%d')
       date_return_i = date(date_return.tm_year, date_return.tm_mon,
                             date_return.tm_mday) + timedelta(counter)
       try:
         dates_staying = args[3]
         date_return_q = date(date_return.tm_year, date_return.tm_mon,
-                                      date_return.tm_mday) + timedelta(counter + stay_in[dates_staying[1]])
+                                      date_return.tm_mday) + timedelta(counter + stay_in[dates_staying])
+        print(date_return_i, date_return_q)
         return date_return_i, date_return_q
       except:
         return date_return_i
@@ -98,8 +99,9 @@ def RoundTrip():
             for _ in range(loop):
                 dates = look(departure, destination)
                 trip_date = date_returns(route, counter, dates[0], dates[1])
-                url = urls('RoundTrip', start[departure], destination, trip_date[0], trip_date[1])
-                lst.append(url)
+                print(trip_date)
+                # url = urls('RoundTrip', start[departure], destination, trip_date[0], trip_date[1])
+                # lst.append(url)
                 counter += 1
     return lst
 
