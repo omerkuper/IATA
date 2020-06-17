@@ -51,20 +51,24 @@ def urls(*args):
 
 
 def date_returns(*args):
-    counter = args[0]
-    dates =  args[1]
-    date_return = time.strptime(str(date_i[dates[0]]), '%y%m%d')
-    date_return_i = date(date_return.tm_year, date_return.tm_mon,
-                          date_return.tm_mday) + timedelta(counter)
-    try:
-      dates_staying = args[2]
-      date_return_q = date(date_return.tm_year, date_return.tm_mon,
-                                     date_return.tm_mday) + timedelta(counter + stay_in[dates_staying[1]])
-      return date_return_i, date_return_q
-    except:
-      return date_return_i
+    route = args[0]
+    counter = args[1]
+    if route is not 'MultiCity':
+      dates =  args[2]
+      date_return = time.strptime(str(date_i[dates[0]]), '%y%m%d')
       date_return_i = date(date_return.tm_year, date_return.tm_mon,
-                                 date_return.tm_mday) + timedelta(counter + _)
+                            date_return.tm_mday) + timedelta(counter)
+      try:
+        dates_staying = args[3]
+        date_return_q = date(date_return.tm_year, date_return.tm_mon,
+                                      date_return.tm_mday) + timedelta(counter + stay_in[dates_staying[1]])
+        return date_return_i, date_return_q
+      except:
+        return date_return_i
+    else:
+      adding = args[2]
+      date_return_i = date(date_return.tm_year, date_return.tm_mon,
+                                 date_return.tm_mday) + timedelta(counter + adding)
 
 
 
