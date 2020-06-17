@@ -105,15 +105,14 @@ def RoundTrip():
 
 
 def MultiCity():
+    route = 'MultiCity'
     lst = []
     counter = 0
     stay = [0] + stay_in
     for stay_long in range(len(stay)):
-        for _ in range(loop):
-            date_return = time.strptime(str(date_i[0]), '%y%m%d')
-            date_return_i = date(date_return.tm_year, date_return.tm_mon,
-                                 date_return.tm_mday) + timedelta(counter + _)
-            url = urls('MultiCity', stay_long, date_return_i)
+        for adding in range(loop):
+            trip_date = date_returns(route, counter, adding)
+            url = urls('MultiCity', stay_long, trip_date)
             lst.append(url)
         try:
             counter += stay[stay_long + 1]
