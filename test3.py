@@ -4,14 +4,14 @@ from datetime import date, timedelta
 YesNo = {'y': 'true', 'n': 'false'}
 
 start = ['LHR', 'akl', 'NYC', 'AMS']
-end = ['akl', 'NYC', 'AMS', 'LHR']
-date_i = [200901]
-stay_in = [19, 7, 10]
+end = ['akl', 'NYC']
+date_i = [200901, 230909]
+stay_in = [19, 7]
 loop = 3
 direct_flight = 'y'
 
 
-def look(counter_out, destination=None):
+def index_counting(counter_out, destination=None):
     if len(date_i) == 1:
         dates = 0
     elif len(date_i) == len(start):
@@ -79,10 +79,13 @@ def OneWay():
     for departure in range(len(start)):
         for destination in range(len(end)):
             for counter in range(loop):
-                dates = look(departure)
-                trip_date = date_returns(route, counter, dates[0])
-                url = urls(route, start[departure], destination, trip_date)
-                lst.append(url)
+                dates = index_counting(destination, destination)
+                try:
+                    trip_date = date_returns(route, counter, dates[0])
+                    url = urls(route, start[departure], destination, trip_date)
+                    lst.append(url)
+                except:
+                    pass
     return lst
 
 
@@ -92,7 +95,7 @@ def RoundTrip():
     for departure in range(len(start)):
         for destination in range(len(end)):
             for counter in range(loop):
-                dates = look(departure, destination)
+                dates = index_counting(departure, destination)
                 try:
                     trip_date = date_returns(route, counter, dates[0], dates[1])
                     url = urls(route, start[departure], destination, trip_date[0], trip_date[1])
@@ -124,3 +127,6 @@ def MultiCity():
 
 for u in OneWay():
     print(u)
+
+# for u in RoundTrip():
+#     print(u)
