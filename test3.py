@@ -6,7 +6,7 @@ YesNo = {'y': 'true', 'n': 'false'}
 start = ['LHR', 'akl', 'NYC', 'AMS']
 end = ['akl', 'NYC', 'AMS', 'LHR']
 date_i = [200901]
-stay_in = [19, 7, 10, 56]
+stay_in = [19, 7, 10]
 loop = 3
 direct_flight = 'y'
 
@@ -62,14 +62,15 @@ def date_returns(*args):
         dates_staying = args[3]
         date_return_q = date(date_return.tm_year, date_return.tm_mon,
                                       date_return.tm_mday) + timedelta(counter + stay_in[dates_staying])
-        print(date_return_i, date_return_q)
         return date_return_i, date_return_q
       except:
         return date_return_i
     else:
       adding = args[2]
+      date_return = time.strptime(str(date_i[0]), '%y%m%d')
       date_return_i = date(date_return.tm_year, date_return.tm_mon,
                                  date_return.tm_mday) + timedelta(counter + adding)
+      return date_return_i
 
 
 
@@ -99,9 +100,8 @@ def RoundTrip():
             for _ in range(loop):
                 dates = look(departure, destination)
                 trip_date = date_returns(route, counter, dates[0], dates[1])
-                print(trip_date)
-                # url = urls('RoundTrip', start[departure], destination, trip_date[0], trip_date[1])
-                # lst.append(url)
+                url = urls(route, start[departure], destination, trip_date[0], trip_date[1])
+                lst.append(url)
                 counter += 1
     return lst
 
@@ -114,7 +114,7 @@ def MultiCity():
     for stay_long in range(len(stay)):
         for adding in range(loop):
             trip_date = date_returns(route, counter, adding)
-            url = urls('MultiCity', stay_long, trip_date)
+            url = urls(route, stay_long, trip_date)
             lst.append(url)
         try:
             counter += stay[stay_long + 1]
@@ -123,8 +123,8 @@ def MultiCity():
     return lst
 
 
-# for u in MultiCity():
-#     print(u)
-
-for u in RoundTrip():
+for u in MultiCity():
     print(u)
+
+# for u in RoundTrip():
+#     print(u)
