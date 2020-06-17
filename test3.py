@@ -52,16 +52,16 @@ def urls(*args):
 
 def date_returns(*args):
     route = args[0]
-    counter = args[1]
+    add_day = args[1]
     if route != 'MultiCity':
-      dates =  args[2]
-      date_return = time.strptime(str(date_i[dates]), '%y%m%d')
+      index_dates =  args[2]
+      date_return = time.strptime(str(date_i[index_dates]), '%y%m%d')
       date_return_i = date(date_return.tm_year, date_return.tm_mon,
-                            date_return.tm_mday) + timedelta(counter)
+                            date_return.tm_mday) + timedelta(add_day)
       try:
-        dates_staying = args[3]
+        how_long_saty = args[3]
         date_return_q = date(date_return.tm_year, date_return.tm_mon,
-                                      date_return.tm_mday) + timedelta(counter + stay_in[dates_staying])
+                                      date_return.tm_mday) + timedelta(add_day + stay_in[how_long_saty])
         return date_return_i, date_return_q
       except:
         return date_return_i
@@ -69,11 +69,8 @@ def date_returns(*args):
       adding = args[2]
       date_return = time.strptime(str(date_i[0]), '%y%m%d')
       date_return_i = date(date_return.tm_year, date_return.tm_mon,
-                                 date_return.tm_mday) + timedelta(counter + adding)
+                                 date_return.tm_mday) + timedelta(add_day + adding)
       return date_return_i
-
-
-
 
 
 def OneWay():
@@ -123,7 +120,7 @@ def MultiCity():
     return lst
 
 
-for u in MultiCity():
+for u in OneWay():
     print(u)
 
 # for u in RoundTrip():
