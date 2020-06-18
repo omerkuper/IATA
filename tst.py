@@ -91,24 +91,25 @@ def OneWay():
     return lst
 
 
-def RoundTrip(run=0):
+def RoundTrip(run=0, lst =[]):
+    print(run)
     route = 'RoundTrip'
-    lst = []
+    # lst = []
+
+    for departure in range(len(start)):
+        for destination in range(len(end)):
+            for counter in range(loop):
+                dates = index_counting(departure, destination)
+                try:
+                    trip_date = date_returns(route, counter, dates[0], dates[1], run)
+                    print(start[departure], end[destination], trip_date[0], trip_date[1])
+                    # url = urls(route, start[departure], destination, trip_date[0], trip_date[1])
+                    # lst.append(url)
+                except:
+                    pass
+    run += 1
     if run < run_loop:
-      for departure in range(len(start)):
-          for destination in range(len(end)):
-              for counter in range(loop):
-                  dates = index_counting(departure, destination)
-                  try:
-                      trip_date = date_returns(route, counter, dates[0], dates[1], run)
-                      print(start[departure], end[destination], trip_date[0], trip_date[1])
-                      # url = urls(route, start[departure], destination, trip_date[0], trip_date[1])
-                      # lst.append(url)
-                  except:
-                      pass
-      print(run)
-      run += 1
-      RoundTrip(run)
+      RoundTrip(run, lst)
     else:
       return lst
 
