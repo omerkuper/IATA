@@ -31,7 +31,6 @@ def index_counting(counter_out, destination=None):
 
 def urls(*args):
     route = args[0]
-    print(route)
     if route == 'OneWay':
         departure, destination, date_return_i = args[1], args[2], args[3]
         url_sky = f'https://www.skyscanner.co.il/transport/flights/{departure}/{end[destination]}/{date_return_i}/?adultsv2=1&cabinclass=economy&childrenv2=&inboundaltsenabled=false&outboundaltsenabled=false&preferdirects={YesNo[direct_flight]}&rtn=0&priceSourceId=&priceTrace=&qp_prevCurrency=USD&qp_prevPrice=OneWayNone&qp_prevProvider=ins_month'
@@ -184,7 +183,7 @@ def Everywhere(run=0, lst =[]):
             dates = index_counting(departure, departure)
             try:
               trip_date = date_returns(route, counter, dates[0])
-              url = urls(route, start[departure], trip_date[0])
+              url = urls(route, start[departure], trip_date)
               lst.append(url)
             except:
                 pass
