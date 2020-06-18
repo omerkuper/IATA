@@ -109,7 +109,7 @@ def RoundTrip(run=0, lst =[]):
                     pass
     run += 1
     if run < run_loop:
-      RoundTrip(run, lst)
+      return RoundTrip(run, lst)
     else:
       return lst
 
