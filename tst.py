@@ -7,8 +7,8 @@ start = ['LHR',  'AMS']
 end = ['akl']
 date_i = [200901, 230909]
 stay_in = [19, 7]
-loop = 3
-run_loop  = 3
+loop = 10
+run_loop  = 2
 direct_flight = 'y'
 
 
@@ -92,10 +92,7 @@ def OneWay():
 
 
 def RoundTrip(run=0, lst =[]):
-    print(run)
     route = 'RoundTrip'
-    # lst = []
-
     for departure in range(len(start)):
         for destination in range(len(end)):
             for counter in range(loop):
@@ -103,8 +100,8 @@ def RoundTrip(run=0, lst =[]):
                 try:
                     trip_date = date_returns(route, counter, dates[0], dates[1], run)
                     print(start[departure], end[destination], trip_date[0], trip_date[1])
-                    # url = urls(route, start[departure], destination, trip_date[0], trip_date[1])
-                    # lst.append(url)
+                    url = urls(route, start[departure], destination, trip_date[0], trip_date[1])
+                    lst.append(url)
                 except:
                     pass
     run += 1
