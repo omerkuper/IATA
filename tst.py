@@ -45,12 +45,12 @@ def urls(*args):
         url_mom = f'https://www.momondo.com/flight-search/{departure}-{end[destination]}/{date_return_i}/{date_return_q}?sort=bestflight_a'
 
     elif route == 'EverywhereRoundTrip':
-      departure, date_return_i, date_return_q = args[1], args[3], args[4]
+      departure, date_return_i, date_return_q = args[1], args[2], args[3]
       url_sky = f'https://www.skyscanner.co.il/transport/flights-from/{departure}/{date_return_i}/{date_return_q}/?adultsv2=1&cabinclass=economy&childrenv2=&inboundaltsenabled=false&outboundaltsenabled=false&preferdirects=false&rtn=1'
       return url_sky
 
     elif route == 'EverywhereOneWay':
-      departure, date_return_i = args[1], args[3]
+      departure, date_return_i = args[1], args[2]
       url_sky = f'https://www.skyscanner.co.il/transport/flights-from/{departure}/{date_return_i}/?adults=1&children=0&adultsv2=1&childrenv2=&infants=0&cabinclass=economy&rtn=0&preferdirects=false&outboundaltsenabled=false&inboundaltsenabled=false&ref=home'
       return url_sky
 
@@ -144,7 +144,6 @@ def Everywhere(run=0, lst =[]):
           for counter in range(loop):
               dates = index_counting(departure, departure)
               try:
-                  print(route, counter, dates[0], dates[1])
                   trip_date = date_returns(route, counter, dates[0], dates[1], run)
                   url = urls(route, start[departure], trip_date[0], trip_date[1])
                   lst.append(url)
