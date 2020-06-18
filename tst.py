@@ -6,7 +6,7 @@ YesNo = {'y': 'true', 'n': 'false'}
 start = ['LHR',  'AMS']
 end = []
 date_i = [200901, 230909]
-stay_in = []
+stay_in = [10]
 loop = 10
 run_loop  = 2
 direct_flight = 'y'
@@ -135,26 +135,6 @@ def MultiCity(route='MultiCity'):
             pass
     return lst
 
-# def Everywhere(run=0, lst =[]):
-#     if len(stay_in) != 0:
-#       route = 'EverywhereRoundTrip'
-#     else:
-#       route = 'EverywhereOneWay'
-#     for departure in range(len(start)):
-#           for counter in range(loop):
-#               dates = index_counting(departure, departure)
-#               try:
-#                   trip_date = date_returns(route, counter, dates[0], dates[1], run)
-#                   url = urls(route, start[departure], trip_date[0], trip_date[1])
-#                   lst.append(url)
-#               except:
-#                   pass
-#     run += 1
-#     if run < run_loop:
-#       return RoundTrip(run, lst)
-#     else:
-#       return lst
-
 
 
 def Everywhere(run=0, lst =[]):
@@ -164,19 +144,17 @@ def Everywhere(run=0, lst =[]):
       route = 'EverywhereOneWay'
     if route == 'EverywhereRoundTrip':
       for departure in range(len(start)):
+        for run in range(run_loop):
             for counter in range(loop):
                 dates = index_counting(departure, departure)
                 try:
                     trip_date = date_returns(route, counter, dates[0], dates[1], run)
+                    # print(start[departure], trip_date[0], trip_date[1])
                     url = urls(route, start[departure], trip_date[0], trip_date[1])
                     lst.append(url)
                 except:
                     pass
-      run += 1
-      if run < run_loop:
-        return RoundTrip(run, lst)
-      else:
-        return lst
+      return lst
     else:
       for departure in range(len(start)):
         for counter in range(loop):
@@ -188,6 +166,40 @@ def Everywhere(run=0, lst =[]):
             except:
                 pass
       return lst
+
+
+# def Everywhere(run=0, lst =[]):
+#     if len(stay_in) != 0:
+#       route = 'EverywhereRoundTrip'
+#     else:
+#       route = 'EverywhereOneWay'
+#     if route == 'EverywhereRoundTrip':
+#       for departure in range(len(start)):
+#             for counter in range(loop):
+#                 dates = index_counting(departure, departure)
+#                 try:
+#                     trip_date = date_returns(route, counter, dates[0], dates[1], run)
+#                     print(start[departure], trip_date[0], trip_date[1])
+#                     # url = urls(route, start[departure], trip_date[0], trip_date[1])
+#                     # lst.append(url)
+#                 except:
+#                     pass
+#       run += 1
+#       if run < run_loop:
+#         return RoundTrip(run, lst)
+#       else:
+#         return lst
+#     else:
+#       for departure in range(len(start)):
+#         for counter in range(loop):
+#             dates = index_counting(departure, departure)
+#             try:
+#               trip_date = date_returns(route, counter, dates[0])
+#               url = urls(route, start[departure], trip_date)
+#               lst.append(url)
+#             except:
+#                 pass
+#       return lst
 
 
 # for u in MultiCity():
