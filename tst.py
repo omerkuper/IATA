@@ -4,7 +4,7 @@ from datetime import date, timedelta
 YesNo = {'y': 'true', 'n': 'false'}
 
 start = ['LHR',  'AMS']
-end = ['lon']
+end = []
 date_i = [200901, 230909]
 stay_in = [19, 7]
 loop = 10
@@ -31,6 +31,7 @@ def index_counting(counter_out, destination=None):
 
 def urls(*args):
     route = args[0]
+    print(route)
     if route == 'OneWay':
         departure, destination, date_return_i = args[1], args[2], args[3]
         url_sky = f'https://www.skyscanner.co.il/transport/flights/{departure}/{end[destination]}/{date_return_i}/?adultsv2=1&cabinclass=economy&childrenv2=&inboundaltsenabled=false&outboundaltsenabled=false&preferdirects={YesNo[direct_flight]}&rtn=0&priceSourceId=&priceTrace=&qp_prevCurrency=USD&qp_prevPrice=OneWayNone&qp_prevProvider=ins_month'
@@ -46,10 +47,12 @@ def urls(*args):
     elif route == 'EverywhereRoundTrip':
       departure, date_return_i, date_return_q = args[1], args[3], args[4]
       url_sky = f'https://www.skyscanner.co.il/transport/flights-from/{departure}/{date_return_i}/{date_return_q}/?adultsv2=1&cabinclass=economy&childrenv2=&inboundaltsenabled=false&outboundaltsenabled=false&preferdirects=false&rtn=1'
+      return url_sky
 
     elif route == 'EverywhereOneWay':
       departure, date_return_i = args[1], args[3]
       url_sky = f'https://www.skyscanner.co.il/transport/flights-from/{departure}/{date_return_i}/?adults=1&children=0&adultsv2=1&childrenv2=&infants=0&cabinclass=economy&rtn=0&preferdirects=false&outboundaltsenabled=false&inboundaltsenabled=false&ref=home'
+      return url_sky
 
 
     elif route == 'MultiCity':
@@ -132,6 +135,27 @@ def MultiCity(route='MultiCity'):
             pass
     return lst
 
+def Everywhere(run=0, lst =[]):
+    if len(stay_in) != 0:
+      route = 'EverywhereRoundTrip'
+    else:
+      route = 'EverywhereOneWay'
+    for departure in range(len(start)):
+          for counter in range(loop):
+              dates = index_counting(departure, departure)
+              try:
+                  print(route, counter, dates[0], dates[1])
+                  trip_date = date_returns(route, counter, dates[0], dates[1], run)
+                  url = urls(route, start[departure], trip_date[0], trip_date[1])
+                  lst.append(url)
+              except:
+                  pass
+    run += 1
+    if run < run_loop:
+      return RoundTrip(run, lst)
+    else:
+      return lst
+
 
 # for u in MultiCity():
 #     print(u)
@@ -139,5 +163,5 @@ def MultiCity(route='MultiCity'):
 # for u in OneWay():
 #     print(u)
 
-for u in RoundTrip():
+for u in Everywhere():
     print(u)
