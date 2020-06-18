@@ -4,7 +4,7 @@ from datetime import date, timedelta
 YesNo = {'y': 'true', 'n': 'false'}
 
 start = ['LHR',  'AMS']
-end = ['akl']
+end = ['lon']
 date_i = [200901, 230909]
 stay_in = [19, 7]
 loop = 10
@@ -84,8 +84,7 @@ def date_returns(*args):
       return sub_date
 
 
-def OneWay():
-    route = 'OneWay'
+def OneWay(route='OneWay'): 
     lst = []
     for departure in range(len(start)):
         for destination in range(len(end)):
@@ -100,15 +99,13 @@ def OneWay():
     return lst
 
 
-def RoundTrip(run=0, lst =[]):
-    route = 'RoundTrip'
+def RoundTrip(run=0, lst =[], route='RoundTrip'):
     for departure in range(len(start)):
         for destination in range(len(end)):
             for counter in range(loop):
                 dates = index_counting(departure, destination)
                 try:
                     trip_date = date_returns(route, counter, dates[0], dates[1], run)
-                    print(start[departure], end[destination], trip_date[0], trip_date[1])
                     url = urls(route, start[departure], destination, trip_date[0], trip_date[1])
                     lst.append(url)
                 except:
@@ -120,8 +117,7 @@ def RoundTrip(run=0, lst =[]):
       return lst
 
 
-def MultiCity():
-    route = 'MultiCity'
+def MultiCity(route='MultiCity'):
     lst = []
     counter_days = 0
     stay = [0] + stay_in
