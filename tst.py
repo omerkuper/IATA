@@ -43,6 +43,15 @@ def urls(*args):
         url_jet = f'https://search.jetradar.com/flights?marker=google&origin_iata={departure.upper()}&destination_iata={end[destination].upper()}&depart_date={date_return_i}&return_date={date_return_q}&with_request=true&adults=1&children=0&infants=0&trip_class=0&locale=en&one_way=false&ct_guests=1+passenger&ct_rooms=1'
         url_mom = f'https://www.momondo.com/flight-search/{departure}-{end[destination]}/{date_return_i}/{date_return_q}?sort=bestflight_a'
 
+    elif route == 'EverywhereRoundTrip':
+      departure, date_return_i, date_return_q = args[1], args[3], args[4]
+      url_sky = f'https://www.skyscanner.co.il/transport/flights-from/{departure}/{date_return_i}/{date_return_q}/?adultsv2=1&cabinclass=economy&childrenv2=&inboundaltsenabled=false&outboundaltsenabled=false&preferdirects=false&rtn=1'
+
+    elif route == 'EverywhereOneWay':
+      departure, date_return_i = args[1], args[3]
+      url_sky = f'https://www.skyscanner.co.il/transport/flights-from/{departure}/{date_return_i}/?adults=1&children=0&adultsv2=1&childrenv2=&infants=0&cabinclass=economy&rtn=0&preferdirects=false&outboundaltsenabled=false&inboundaltsenabled=false&ref=home'
+
+
     elif route == 'MultiCity':
         stay_long, date_return_i = args[1], args[2]
         url_sky = f'https://www.skyscanner.net/transport/flights/{start[stay_long]}/{end[stay_long]}/{date_return_i}?flexible_origin=true&flexible_depart=direct&flexible_return=direct&adults=1&children=0&adultsv2=1&childrenv2=&infants=0&cabinclass=economy&rtn=0&preferdirects={YesNo[direct_flight]}&outboundaltsenabled=false&inboundaltsenabled=false&ref=home&currency=USD#results'
