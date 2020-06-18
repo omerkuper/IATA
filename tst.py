@@ -3,15 +3,16 @@ from datetime import date, timedelta
 
 YesNo = {'y': 'true', 'n': 'false'}
 
-start = ['LHR', 'akl', 'NYC', 'AMS']
-end = ['akl', 'NYC', 'AMS', 'LHR']
-date_i = [200901]
-stay_in = [19, 7, 10]
+start = ['LHR',  'AMS']
+end = ['akl']
+date_i = [200901, 230909]
+stay_in = [19, 7]
 loop = 3
+run_loop  = 3
 direct_flight = 'y'
 
 
-def look(counter_out, destination):
+def index_counting(counter_out, destination=None):
     if len(date_i) == 1:
         dates = 0
     elif len(date_i) == len(start):
@@ -25,11 +26,9 @@ def look(counter_out, destination):
         staying = counter_out
     else:
         staying = destination
-
     return dates, staying
 
 
-# def urls(route, departure=None, destination=None, date_return_i=None, date_return_q=None, stay_long=None):
 def urls(*args):
     route = args[0]
     if route == 'OneWay':
@@ -52,59 +51,80 @@ def urls(*args):
     return url_sky, url_jet, url_mom
 
 
+def date_returns(*args):
+    route = args[0]
+    add_day = args[1]
+    if route != 'MultiCity':
+      index_dates = args[2]
+      main_date = time.strptime(str(date_i[index_dates]), '%y%m%d')
+      sub_date = date(main_date.tm_year, main_date.tm_mon,
+                            main_date.tm_mday) + timedelta(add_day)
+      try:
+        how_long_saty = args[3]
+        run = args[4]
+        sec_sub_date = date(main_date.tm_year, main_date.tm_mon,
+                                      main_date.tm_mday) + timedelta(add_day + stay_in[how_long_saty] + run)
+        return sub_date, sec_sub_date
+      except:
+        return sub_date
+    else:
+      adding = args[2]
+      main_date = time.strptime(str(date_i[0]), '%y%m%d')
+      sub_date = date(main_date.tm_year, main_date.tm_mon,
+                                 main_date.tm_mday) + timedelta(add_day + adding)
+      return sub_date
+
+
 def OneWay():
+    route = 'OneWay'
     lst = []
-    counter_out = 0
-    for departure in start:
+    for departure in range(len(start)):
         for destination in range(len(end)):
-            counter = 0
-            for _ in range(loop):
-                dates = look(counter_out, destination)
-                date_return = time.strptime(str(date_i[dates[0]]), '%y%m%d')
-                date_return_i = date(date_return.tm_year, date_return.tm_mon,
-                                     date_return.tm_mday) + timedelta(counter)
-                url = urls('OneWay', departure, destination, date_return_i)
-                lst.append(url)
-                counter += 1
-        counter_out += 1
+            for counter in range(loop):
+                dates = index_counting(destination, destination)
+                try:
+                    trip_date = date_returns(route, counter, dates[0])
+                    url = urls(route, start[departure], destination, trip_date)
+                    lst.append(url)
+                except:
+                    pass
     return lst
 
 
-def RoundTrip():
+def RoundTrip(run=0):
+    route = 'RoundTrip'
     lst = []
-    counter_out = 0
-    for departure in start:
-        for destination in range(len(end)):
-            counter = 0
-            for _ in range(loop):
-                dates_staying = look(counter_out, destination)
-
-                date_return = time.strptime(str(date_i[dates_staying[0]]), '%y%m%d')
-                date_return_i = date(date_return.tm_year, date_return.tm_mon,
-                                     date_return.tm_mday) + timedelta(counter)
-
-                date_return_q = date(date_return.tm_year, date_return.tm_mon,
-                                     date_return.tm_mday) + timedelta(counter + stay_in[dates_staying[1]])
-                url = urls('RoundTrip', departure, destination, date_return_i, date_return_q)
-                lst.append(url)
-                counter += 1
-        counter_out += 1
-    return lst
+    if run < run_loop:
+      for departure in range(len(start)):
+          for destination in range(len(end)):
+              for counter in range(loop):
+                  dates = index_counting(departure, destination)
+                  try:
+                      trip_date = date_returns(route, counter, dates[0], dates[1], run)
+                      print(start[departure], end[destination], trip_date[0], trip_date[1])
+                      # url = urls(route, start[departure], destination, trip_date[0], trip_date[1])
+                      # lst.append(url)
+                  except:
+                      pass
+      print(run)
+      run += 1
+      RoundTrip(run)
+    else:
+      return lst
 
 
 def MultiCity():
+    route = 'MultiCity'
     lst = []
-    counter = 0
+    counter_days = 0
     stay = [0] + stay_in
     for stay_long in range(len(stay)):
-        for _ in range(loop):
-            date_return = time.strptime(str(date_i[0]), '%y%m%d')
-            date_return_i = date(date_return.tm_year, date_return.tm_mon,
-                                 date_return.tm_mday) + timedelta(counter + _)
-            url = urls('MultiCity', stay_long, date_return_i)
+        for adding in range(loop):
+            trip_date = date_returns(route, counter_days, adding)
+            url = urls(route, stay_long, trip_date)
             lst.append(url)
         try:
-            counter += stay[stay_long + 1]
+            counter_days += stay[stay_long + 1]
         except:
             pass
     return lst
@@ -113,5 +133,8 @@ def MultiCity():
 # for u in MultiCity():
 #     print(u)
 
-for u in OneWay():
+# for u in OneWay():
+#     print(u)
+
+for u in RoundTrip():
     print(u)
